@@ -1,6 +1,6 @@
 
 process count_mapping_reads {
-    publishDir "${params.output_dir}"
+    publishDir "${params.output_dir}", mode: 'copy'
 
     input:
         path original_fastq
