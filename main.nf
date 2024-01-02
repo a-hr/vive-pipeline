@@ -42,6 +42,7 @@ workflow {
         human_align(human_ref_fa, unmapped_fastq, "human")
 
         count_mapping_reads(
+            input_fastq,
             clean_fastq,
             target_align.out.mapped_bam,
             human_align.out.mapped_bam,
