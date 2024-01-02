@@ -8,7 +8,7 @@ work/
 # pipeline inputs and outputs
 inputs/
 inputs_all/
-*output/
+*output*/
 
 # pipeline intermediate files
 ref_gen/*

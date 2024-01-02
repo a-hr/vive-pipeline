@@ -1,8 +1,8 @@
 
 process align {
-    publishDir "${params.output_dir}",
-         saveAs: { filename -> "${out_name}_${filename}" }, 
-         enabled: params.get_bams
+    publishDir "${params.output_dir}/bams",
+        enabled: params.get_bams,
+        mode: 'copy'
 
     input:
         path reference
@@ -10,10 +10,10 @@ process align {
         val out_name
 
     output:
-        path "mapped.bam", emit: "mapped_bam"
-        path "unmapped.bam", emit: "unmapped_bam"
-        path "mapped.bam.bai", emit: "mapped_bai"
-        path "unmapped.bam.bai", emit: "unmapped_bai"
+        path "${out_name}_mapped.bam", emit: "mapped_bam"
+        path "${out_name}_unmapped.bam", emit: "unmapped_bam"
+        path "${out_name}_mapped.bam.bai", emit: "mapped_bai"
+        path "${out_name}_unmapped.bam.bai", emit: "unmapped_bai"
 
     script:
         """
@@ -25,11 +25,14 @@ process align {
         samtools index aligned.bam
 
         # Separating mapped and unmapped reads
-        samtools view -b -F 4 -o mapped.bam aligned.bam
-        samtools view -b -f 4 -o unmapped.bam aligned.bam
+        samtools view -b -F 4 -o ${out_name}_mapped.bam aligned.bam
+        samtools view -b -f 4 -o ${out_name}_unmapped.bam aligned.bam
 
         # Indexing
-        samtools index -M *.bam
+        for bam in *.bam
+        do
+            samtools index \$bam
+        done
         """
 }
 
@@ -37,10 +40,11 @@ process bam2fastq {
     input:
         path bam
     output:
-        path "sample.fastq.gz"
+        path "*.fastq.gz"
 
     script:
         """
-        samtools fastq -n $bam | gzip > sample.fastq.gz
+        filename=\$(basename $bam .bam)
+        samtools fastq -n $bam | gzip > \$filename.fastq.gz
         """
 }

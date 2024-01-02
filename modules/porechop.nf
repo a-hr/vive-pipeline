@@ -26,6 +26,6 @@ process rna2dna {
 
     script:
         """
-        zcat ${input.fastq} | perl -pe 's/U/T/g if $. % 4 == 2' | gzip -c > dna.fastq.gz
+        zcat ${input_fastq} | perl -pe 's/U/T/g if \$. % 4 == 2' | gzip -c > dna.fastq.gz
         """
 }

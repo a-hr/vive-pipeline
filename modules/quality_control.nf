@@ -16,7 +16,8 @@ process multiqc {
     publishDir "${params.output_dir}"
 
     input:
-        path logs
+        path porechop_logs
+        path fastqc_logs
     output:
         path "*.html"
     

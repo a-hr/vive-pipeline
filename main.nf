@@ -53,5 +53,6 @@ workflow {
     // TODO
     
     // Run multiqc
-    multiqc([porechop.out.logs, fastqc.out])
+    // logs = Channel.of([porechop.out.logs, fastqc.out])
+    multiqc(porechop.out.logs, fastqc.out)
 }
