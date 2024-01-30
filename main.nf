@@ -37,7 +37,8 @@ workflow {
     // Assess contamination
     if (params.assess_contamination) {
         // Retrieve unmapped reads from the target alignment
-        unmapped_fastq = bam2fastq(target_align.out.unmapped_bam)
+        unmapped_fastq = target_align.out.unmapped_fastq
+
         // Align unmapped reads to the human reference
         human_align(human_ref_fa, unmapped_fastq, "human")
 
@@ -45,8 +46,9 @@ workflow {
             input_fastq,
             clean_fastq,
             target_align.out.mapped_bam,
+            target_align.out.unmapped_fastq,
             human_align.out.mapped_bam,
-            human_align.out.unmapped_bam
+            human_align.out.unmapped_fastq
         )
     }
 

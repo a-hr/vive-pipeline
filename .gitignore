@@ -6,8 +6,7 @@ work/
 *.txt
 
 # pipeline inputs and outputs
-inputs/
-inputs_all/
+inputs*/
 *output*/
 
 # pipeline intermediate files

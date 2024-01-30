@@ -11,28 +11,28 @@ process align {
 
     output:
         path "${out_name}_mapped.bam", emit: "mapped_bam"
-        path "${out_name}_unmapped.bam", emit: "unmapped_bam"
+        path "${out_name}_unmapped.fastq.gz", emit: "unmapped_fastq"
         path "${out_name}_mapped.bam.bai", emit: "mapped_bai"
-        path "${out_name}_unmapped.bam.bai", emit: "unmapped_bai"
 
     script:
         """
         # Aligning fastq
-        minimap2 -t 8 -ax map-ont -c --MD $reference $fastq \\
+        minimap2 -2 -t 8 -ax splice -c --MD --secondary=no $reference $fastq \\
             | samtools view -b - \\
             | samtools sort -o aligned.bam -
 
         samtools index aligned.bam
 
         # Separating mapped and unmapped reads
-        samtools view -b -F 4 -o ${out_name}_mapped.bam aligned.bam
-        samtools view -b -f 4 -o ${out_name}_unmapped.bam aligned.bam
+        samtools view -b -F 2820 \\
+            -U unmapped.bam \\
+            -o ${out_name}_mapped.bam aligned.bam
 
         # Indexing
-        for bam in *.bam
-        do
-            samtools index \$bam
-        done
+        samtools index ${out_name}_mapped.bam
+
+        # Converting unmapped reads to fastq
+        samtools bam2fq unmapped.bam | gzip > ${out_name}_unmapped.fastq.gz
         """
 }
 
