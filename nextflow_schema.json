@@ -1,0 +1,133 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "$id": "https://raw.githubusercontent.com/a-hr/vive-pipeline/master/nextflow_schema.json",
+    "title": "a-hr/vive-pipeline pipeline parameters",
+    "description": "A pipeline to preprocess, align and analyze ONT direct RNA and cDNA sequencing data.",
+    "type": "object",
+    "definitions": {
+        "basic_parameters": {
+            "title": "Basic parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "experiment_name": {
+                    "type": "string",
+                    "default": "test_run",
+                    "description": "name of the experiment"
+                },
+                "input_fastqs": {
+                    "type": "string",
+                    "default": "vive-pipeline/inputs/",
+                    "description": "path to the folder containing the FASTQs (if multiple FASTQs, will be binded)",
+                    "format": "directory-path"
+                },
+                "plasmid_ref_fa": {
+                    "type": "string",
+                    "default": "vive-pipeline/inputs/reference.fa",
+                    "description": "path of the FASTA containing the reference sequence to map against",
+                    "format": "file-path"
+                },
+                "output_dir": {
+                    "type": "string",
+                    "default": "output-test",
+                    "description": "oath to the output directory (will be created)",
+                    "format": "directory-path"
+                },
+                "is_rna": {
+                    "type": "boolean",
+                    "description": "whether the provided FASTQs come from dRNA sequencing"
+                }
+            },
+            "required": [
+                "experiment_name",
+                "input_fastqs",
+                "plasmid_ref_fa"
+            ]
+        },
+        "optional_parameters": {
+            "title": "Optional parameters",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "get_bams": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "whether to generate output BAM files (to allow IGV visualization)"
+                },
+                "min_len": {
+                    "type": "integer",
+                    "default": 200,
+                    "description": "minimum length of a read to be accepted",
+                    "minimum": 1
+                },
+                "max_len": {
+                    "type": "integer",
+                    "default": 8000,
+                    "description": "maximum length of a read to be accepted",
+                    "minimum": 1
+                },
+                "assess_secondary": {
+                    "type": "boolean",
+                    "description": "whether to map against a secondary sequence (e.g. to use spike-ins)"
+                },
+                "secondary_ref_fa": {
+                    "type": "string",
+                    "default": "GRCh38.primary_assembly.genome.fa",
+                    "description": "path to the reference FASTA of the secondary target",
+                    "format": "file-path"
+                }
+            }
+        },
+        "new_group_4": {
+            "title": "New Group 4",
+            "type": "object",
+            "description": "",
+            "default": "",
+            "properties": {
+                "splice_models": {
+                    "type": "string",
+                    "default": "assets/splicemodels",
+                    "description": "path to splice_models directory",
+                    "format": "directory-path"
+                },
+                "me2x5": {
+                    "type": "string",
+                    "default": "assets/splicemodels/me2x5",
+                    "description": "path to me2x5 file",
+                    "format": "file-path"
+                },
+                "score3": {
+                    "type": "string",
+                    "default": "bin/score3.pl",
+                    "description": "path to score3 script",
+                    "format": "file-path"
+                },
+                "score5": {
+                    "type": "string",
+                    "default": "bin/score5.pl",
+                    "description": "path to score5 script",
+                    "format": "file-path"
+                },
+                "splice5seqs": {
+                    "type": "string",
+                    "default": "assets/splicemodels/splice5sequences",
+                    "description": "path to splice5sequences file",
+                    "format": "file-path"
+                }
+            }
+        }
+    },
+    "allOf": [
+        {
+            "$ref": "#/definitions/basic_parameters"
+        },
+        {
+            "$ref": "#/definitions/optional_parameters"
+        },
+        {
+            "$ref": "#/definitions/new_group_4"
+        }
+    ]
+}
