@@ -1,0 +1,19 @@
+# Editabñe parameter file for the VIVE-Biotech pipeline
+
+# ---- required settings ----
+experiment_name: 'project_name'
+input_fastqs: "${projectDir}/inputs/fastqs"
+plasmid_ref_fa: "${projectDir}/inputs/reference.fa"
+output_dir: "${projectDir}/${experiment_name}"
+is_rna: false
+
+# ---- trimming ----
+min_len: 200
+max_len: 8000
+
+# ---- evaluation of secondary species ----
+assess_secondary: false
+secondary_ref_fa: ""  # fasta file
+
+# ---- optional arguments ----
+get_bams: true
