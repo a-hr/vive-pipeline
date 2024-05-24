@@ -13,6 +13,7 @@ inputs*/
 ref_gen/*
 containers/*
 *index/
+logs/
 
 # macos files
 .DS_Store
