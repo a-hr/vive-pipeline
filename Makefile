@@ -4,5 +4,5 @@ launch_cluster:
 clean:
 	rm -rf .nextflow.log*
 	rm -rf work
-	rm -f slurm*
+	rm -f logs/*
 	clear
